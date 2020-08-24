@@ -15,7 +15,7 @@ INSTALL_DIR=/usr/local
 #  OPENCV_TEST_DATA_PATH=../opencv_extra/testdata
 # Make sure that you set this to YES
 # Value should be YES or NO
-DOWNLOAD_OPENCV_EXTRAS=NO
+DOWNLOAD_OPENCV_CONTRIB=NO
 # Source code directory
 OPENCV_SOURCE_DIR=$HOME
 WHEREAMI=$PWD
@@ -60,8 +60,8 @@ echo " Current OpenCV Installation: $JETSON_OPENCV"
 echo " OpenCV binaries will be installed in: $CMAKE_INSTALL_PREFIX"
 echo " OpenCV Source will be installed in: $OPENCV_SOURCE_DIR"
 
-if [ $DOWNLOAD_OPENCV_EXTRAS == "YES" ] ; then
- echo "Also installing opencv_extras"
+if [ $DOWNLOAD_OPENCV_CONTRIB == "YES" ] ; then
+ echo "Also installing opencv_contrib"
 fi
 
 # Repository setup
@@ -117,11 +117,11 @@ git clone https://github.com/opencv/opencv.git
 cd opencv
 git checkout -b v${OPENCV_VERSION} ${OPENCV_VERSION}
 
-if [ $DOWNLOAD_OPENCV_EXTRAS == "YES" ] ; then
- echo "Installing opencv_extras"
+if [ $DOWNLOAD_OPENCV_CONTRIB == "YES" ] ; then
+ echo "Installing opencv_contrib"
  # This is for the test data
  cd $OPENCV_SOURCE_DIR
- git clone https://github.com/opencv/opencv_extra.git
+  git clone https://github.com/opencv/opencv_contrib.git 
  cd opencv_extra
  git checkout -b v${OPENCV_VERSION} ${OPENCV_VERSION}
 fi
@@ -158,6 +158,11 @@ time cmake -D CMAKE_BUILD_TYPE=RELEASE \
       -D WITH_OPENGL=ON \
       -D CUDA_NVCC_FLAGS="--expt-relaxed-constexpr" \
       -D WITH_TBB=ON \
+      -D HAVE_opencv_python3=ON \
+      -D INSTALL_PYTHON_EXAMPLES=ON \
+      -D PYTHON_DEFAULT_EXECUTABLE=/usr/bin/python3.6 \
+      -D BUILD_NEW_PYTHON_SUPPORT=ON \
+      -D OPENCV_EXTRA_MODULES_PATH=/home/nvidia/lib/opencv_contrib/modules \
       ../
 
 if [ $? -eq 0 ] ; then

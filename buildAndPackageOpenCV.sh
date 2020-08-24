@@ -205,7 +205,6 @@ else
    echo "There was an issue with the final installation"
    exit 1
 fi
-
 # check installation
 IMPORT_CHECK="$(python -c "import cv2 ; print cv2.__version__")"
 if [[ $IMPORT_CHECK != *$OPENCV_VERSION* ]]; then
